@@ -34,3 +34,5 @@
 *.db
 *.ipch
 *.vs
+/Visualizer/x64/Debug
+/x64/Debug

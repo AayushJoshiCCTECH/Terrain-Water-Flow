@@ -60,8 +60,10 @@ void OpenGLWindow::paintGL()
     QMatrix4x4 matrix;
     QMatrix4x4 scaleMatrix;
     QMatrix4x4 rotationMatrix;
-    matrix.perspective(60.0f * scaleFactor, 4.0f / 3.0f * scaleFactor, 0.1f, 1000.0f);
-    matrix.translate(-20, -5, -170);
+    matrix.perspective(60.0f * scaleFactor, 4.0f / 3.0f * scaleFactor, 0.001f, 1000.0f);
+    matrix.translate(-20, -45, -170);
+    /*matrix.ortho(-100.0f * scaleFactor, 100.0f * scaleFactor, -100.0f * scaleFactor, 100.0f * scaleFactor, 0.000000001f, 10000.0f);
+    matrix.translate(0, 0, -150);*/
     matrix.rotate(rotationAngle);
     mProgram->setUniformValue(m_matrixUniform, matrix);
 
@@ -84,6 +86,8 @@ void OpenGLWindow::paintGL()
     glLineWidth(5.0f);
     glDrawArrays(GL_LINE_STRIP, 0, waterFlow.size()/3);
     glLineWidth(1.0f);
+
+    glClearColor(0.3, 0.3, 0.3, 1);
 
     glDisableVertexAttribArray(m_colAttr);
     glDisableVertexAttribArray(m_posAttr);
@@ -162,9 +166,9 @@ void OpenGLWindow::initializeGL()
     colors = new GLfloat[totalCoordinates];
 
     for (int i = 0; i < totalCoordinates; i += 3) {
-        colors[i] = 1.0f;
-        colors[i + 1] = 1.0f;
-        colors[i + 2] = 0.0f;
+        colors[i] = 0.5f;
+        colors[i + 1] = 0.7f;
+        colors[i + 2] = 0.2f;
     }
 
     Findpath findWaterPath;
@@ -182,7 +186,7 @@ void OpenGLWindow::initializeGL()
 
         colorsPath.push_back(0.0f);
         colorsPath.push_back(0.0f);
-        colorsPath.push_back(1.0f);
+        colorsPath.push_back(0.8f);
 
     }
 
@@ -216,12 +220,12 @@ void OpenGLWindow::wheelEvent(QWheelEvent* event)
 
 void OpenGLWindow::zoomIn()
 {
-    scaleFactor /= 0.00001f;
+    scaleFactor *= 1.1f;
     update();
 }
 
 void OpenGLWindow::zoomOut()
 {
-    scaleFactor *= 0.00001f;
+    scaleFactor /= 1.1f;
     update();
 }
